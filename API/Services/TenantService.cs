@@ -36,7 +36,7 @@ public class TenantService
             CreatedAt = DateTime.UtcNow,
         };
         _centralDb.Tenants.Add(tenant);
-        await _centralDb.SaveChangesAsync();
+        //await _centralDb.SaveChangesAsync();
 
         // Create tenant DB
         await CreateTenantDatabaseAsync(dbName);
@@ -44,6 +44,18 @@ public class TenantService
         // Migrate schema
         using TenantDbContext tenantDb = _dbContextFactory.CreateDbContext(connStr);
         await tenantDb.Database.MigrateAsync();
+
+        // Track latest applied migration
+        IEnumerable<string> appliedMigrations = await tenantDb.Database.GetAppliedMigrationsAsync();
+        string lastMigration = appliedMigrations.LastOrDefault() ?? "None";
+
+        _centralDb.MigrationStatuses.Add(new MigrationStatus
+        {
+            TenantId = tenant.Id,
+            LastMigration = lastMigration,
+            LastChecked = DateTime.UtcNow
+        });
+        await _centralDb.SaveChangesAsync();
 
         // Create admin user (optional)
         User adminUser = new()

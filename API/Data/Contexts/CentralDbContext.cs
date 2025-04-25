@@ -1,5 +1,6 @@
 ﻿namespace API.Data.Contexts;
 
+using API.Data.Models.Central;
 using API.Data.Models.Tenant;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ public class CentralDbContext : DbContext
 
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<CustomField> CustomFields { get; set; }
+    public DbSet<MigrationStatus> MigrationStatuses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

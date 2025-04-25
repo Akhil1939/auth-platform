@@ -29,6 +29,20 @@ namespace API.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MigrationStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastMigration = table.Column<string>(type: "text", nullable: false),
+                    LastChecked = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MigrationStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tenants",
                 columns: table => new
                 {
@@ -37,7 +51,7 @@ namespace API.Data.Migrations
                     Slug = table.Column<string>(type: "text", nullable: false),
                     DbConnectionString = table.Column<string>(type: "text", nullable: false),
                     BrandingJson = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,6 +70,9 @@ namespace API.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CustomFields");
+
+            migrationBuilder.DropTable(
+                name: "MigrationStatuses");
 
             migrationBuilder.DropTable(
                 name: "Tenants");

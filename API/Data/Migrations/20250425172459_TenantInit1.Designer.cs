@@ -11,9 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace API.Data.Migrations
 {
-    [DbContext(typeof(CentralDbContext))]
-    [Migration("20250424181218_Init_CentralDb")]
-    partial class Init_CentralDb
+    [DbContext(typeof(TenantDbContext))]
+    [Migration("20250425172459_TenantInit1")]
+    partial class TenantInit1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace API.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("API.Data.Models.Tenant.CustomField", b =>
+            modelBuilder.Entity("API.Data.Models.Central.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,60 +33,40 @@ namespace API.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("API.Data.Models.Central.UserCustomFieldValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("FieldName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FieldType")
+                    b.Property<string>("FieldValue")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsRequired")
-                        .HasColumnType("boolean");
-
-                    b.PrimitiveCollection<string[]>("Options")
-                        .HasColumnType("text[]");
-
-                    b.Property<Guid>("TenantId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomFields");
-                });
-
-            modelBuilder.Entity("API.Data.Models.Tenant.Tenant", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("BrandingJson")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DbConnectionString")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
-                    b.ToTable("Tenants");
+                    b.ToTable("UserCustomFieldValues");
                 });
 #pragma warning restore 612, 618
         }
