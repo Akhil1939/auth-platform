@@ -15,7 +15,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(string tenantSlug, [FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register([FromRoute] string tenantSlug, [FromBody] RegisterRequest request)
     {
         try
         {
@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var token = await _authService.LoginAsync(tenantSlug, request.Email, request.Password);
+            string token = await _authService.LoginAsync(tenantSlug, request.Email, request.Password);
             return Ok(new { token });
         }
         catch (Exception ex)

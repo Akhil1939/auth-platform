@@ -1,4 +1,4 @@
-﻿namespace API.Data.Models.Central;
+﻿namespace API.Data.Models.Tenant;
 
 public class UserCustomFieldValue
 {

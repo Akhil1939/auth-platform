@@ -1,0 +1,23 @@
+dotnet ef migrations add Init_CentralDb --context CentralDbContext -o Data/Migrations/Central
+dotnet ef database update --context CentralDbContext
+
+
+dotnet ef migrations add MyNewMigrationName --context TenantDbContext -o Data/Migrations/Tenant
+
+
+
+
+
+
+
+Build the Tenant Registration API (with DB creation logic)?
+
+Set up Login/Register API with tenant-based auth?
+
+Start with Admin Dashboard API for custom field config?
+
+Middleware to resolve tenant from domain/slug?
+
+Login/Register API next?
+
+Or set up custom field APIs?

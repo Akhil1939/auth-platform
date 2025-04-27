@@ -1,5 +1,5 @@
 ﻿using API.Data.Contexts;
-using API.Data.Models.Tenant;
+using API.Data.Models.Central;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Providers;

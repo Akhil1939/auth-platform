@@ -1,6 +1,8 @@
 ﻿using API.Data.Contexts;
 using API.Data.Models.Central;
+using API.Data.Models.Tenant;
 using API.Providers;
+using API.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
@@ -19,16 +21,18 @@ public class AuthService
 
     public async Task<bool> RegisterUserAsync(string tenantSlug, string email, string password)
     {
-        Data.Models.Tenant.Tenant tenant = await _tenantProvider.GetTenantAsync(tenantSlug);
+        Tenant tenant = await _tenantProvider.GetTenantAsync(tenantSlug);
         using TenantDbContext db = _dbFactory.CreateDbContext(tenant.DbConnectionString);
 
         if (await db.Users.AnyAsync(u => u.Email == email))
             throw new Exception("User already exists");
-
-        User user = new()
+        (string hash, string salt) = PasswordHelper.CreatePasswordHash(password);
+        TenantUser user = new()
         {
             Email = email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
+            Password = hash,
+            Salt = salt,
+
         };
 
         db.Users.Add(user);
@@ -38,11 +42,11 @@ public class AuthService
 
     public async Task<string> LoginAsync(string tenantSlug, string email, string password)
     {
-        Data.Models.Tenant.Tenant tenant = await _tenantProvider.GetTenantAsync(tenantSlug);
+        Tenant tenant = await _tenantProvider.GetTenantAsync(tenantSlug);
         using TenantDbContext db = _dbFactory.CreateDbContext(tenant.DbConnectionString);
 
-        User? user = await db.Users.FirstOrDefaultAsync(u => u.Email == email);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+        TenantUser? user = await db.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null || PasswordHelper.VerifyPasswordHash(password, user.Password, user.Salt))
             throw new Exception("Invalid credentials");
 
         // Return JWT (replace with your signing logic)

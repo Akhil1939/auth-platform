@@ -2,6 +2,7 @@
 using API.Data.DTOs;
 using API.Data.Models.Central;
 using API.Data.Models.Tenant;
+using API.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
@@ -58,10 +59,19 @@ public class TenantService
         await _centralDb.SaveChangesAsync();
 
         // Create admin user (optional)
-        User adminUser = new()
+        (string hash, string salt) = PasswordHelper.CreatePasswordHash(request.AdminPassword);
+        TenantUser adminUser = new()
         {
             Email = request.AdminEmail,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.AdminPassword)
+            Password = hash,
+            Salt = salt,
+            UserRoles =
+            [
+                new TenantUserRole
+                {
+                    RoleId = 1, // Admin role ID
+                }
+            ],
         };
         tenantDb.Users.Add(adminUser);
         await tenantDb.SaveChangesAsync();
