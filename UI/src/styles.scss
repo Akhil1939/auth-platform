@@ -1,1 +1,49 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
 /* You can add global styles to this file, and also import other style files */
+$theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$violet-palette,
+  ),
+  typography: (
+    brand-family: 'Comic Sans',
+    bold-weight: 900
+  ),
+  density: (
+    scale: -1
+  )
+));
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    // background-color: black;
+
+}
+
+
+
+$my-theme: mat.define-theme((
+ color: (
+    theme-type: dark,
+    primary: mat.$cyan-palette,
+  ),
+));
+
+html {
+  // Emit theme-dependent styles for common features used across multiple components.
+  @include mat.core-theme($my-theme);
+
+  // Emit styles for MatButton based on `$my-theme`. Because the configuration
+  // passed to `define-theme` omits typography, `button-theme` will not
+  // emit any typography styles.
+  @include mat.button-theme($my-theme);
+
+  // Include the theme mixins for other components you use here.
+}
