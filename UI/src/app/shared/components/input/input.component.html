@@ -1,0 +1,113 @@
+<mat-form-field
+  appearance="outline"
+  class="w-full"
+  [ngClass]="[
+    customClass(),
+    activeControl.invalid && (activeControl.touched || activeControl.dirty)
+      ? 'error'
+      : ''
+  ]"
+>
+  <!-- Label -->
+  @if (label() && !hideLabel()) {
+  <mat-label>{{ label() }}</mat-label>
+  }
+
+  <!-- Prefix -->
+  @if (prefix() || prefixIcon() || prefixImgPath()) {
+  <div matPrefix class="input-prefix" [ngClass]="prefixClass()">
+    @if (prefix()) {
+    {{ prefix() }}
+    } @else if (prefixIcon()) {
+    <mat-icon class="prefix-suffix-mat-icon">{{ prefixIcon() }}</mat-icon>
+    } @else {
+    <img [src]="prefixImgPath()" alt="prefix icon" class="prefix-img" />
+    }
+  </div>
+  }
+  <!-- Prefix Text-->
+  @else if (prefixText()) {
+  <span matTextPrefix class="input-text-prefix" [ngClass]="prefixClass()">
+    {{ prefixText() }}
+  </span>
+  }
+
+  <!-- Input -->
+  <input
+    matInput
+    [type]="type()"
+    [formControl]="activeControl"
+    [placeholder]="placeholder()"
+    [readonly]="readonly()"
+    (keydown)="onKeyDown($event)"
+    (keyup)="onKeyUp($event)"
+    (blur)="onTouched()"
+    autocomplete="off"
+    [ngClass]="inputClasses()"
+  />
+
+  <!-- Arrows (Only for number type) -->
+  @if (type() === 'number' && showArrowsForNumber()) {
+  <span matSuffix>
+    <div class="arrows" [class.disabled]="readonly()">
+      <mat-icon
+        class="arrow up"
+        [class.active]="activeArrow() === 'up'"
+        [class.disabled]="readonly()"
+        [style.cursor]="readonly() ? 'not-allowed' : 'pointer'"
+        (click)="adjustValue('increment')"
+        >keyboard_arrow_up</mat-icon
+      >
+      <mat-icon
+        class="arrow down"
+        [class.active]="activeArrow() === 'down'"
+        [class.disabled]="readonly()"
+        [style.cursor]="readonly() ? 'not-allowed' : 'pointer'"
+        (click)="adjustValue('decrement')"
+        >keyboard_arrow_down</mat-icon
+      >
+    </div>
+  </span>
+  }
+
+  <!-- Suffix -->
+  @if (suffix() || suffixIcon() || suffixImgPath()) {
+  <div matSuffix class="input-suffix" [ngClass]="suffixClass()">
+    @if (suffix()) {
+    {{ suffix() }}
+    } @else if (suffixIcon()) {
+    <mat-icon class="prefix-suffix-mat-icon">{{ suffixIcon() }}</mat-icon>
+    } @else {
+    <img [src]="suffixImgPath()" alt="suffix icon" class="suffix-img" />
+    }
+  </div>
+  }
+  <!-- Suffix Text-->
+  @else if (suffixText()) {
+  <span matTextSuffix [ngClass]="suffixClass()">
+    {{ suffixText() }}
+  </span>
+  }
+  <!-- Suffix Button -->
+  @else if (suffixButtonIcon() || suffixButtonImgPath()) {
+  <button
+    mat-icon-button
+    matSuffix
+    (click)="suffixButtonClick.emit()"
+    type="button"
+    [disabled]="disabled()"
+  >
+    @if (suffixButtonIcon()) {
+    <mat-icon>{{ suffixButtonIcon() }}</mat-icon>
+    } @else {
+    <img [src]="suffixButtonImgPath()" alt="suffix icon" />
+    }
+  </button>
+  }
+
+  <!-- Error message -->
+  @if (activeControl.invalid && (activeControl.touched || activeControl.dirty))
+  {
+  <mat-error>{{ errorMessage() }}</mat-error>
+  }
+</mat-form-field>
