@@ -1,0 +1,145 @@
+<header class="header">
+    <mat-toolbar>
+        <button mat-icon-button class="btn size-lg" (click)="toggleSidebar()">
+            <mat-icon>
+                <img src="./assets/images/ic-menu.svg" alt="Menu" />
+            </mat-icon>
+        </button>
+        <a href="javascript:void(0);" routerLink="/ui/super-admin/users" class="header-logo d-sm-none d-inline-block">
+            <img src="./assets/images/logo-mobile-light.svg" alt="Ez-Sitebid" />
+        </a>
+        <div class="user-info-wrap d-none d-sm-block">
+            <h4>
+                Hi, Harry Owens <span class="separator">-</span>
+                <p>{{currentModule}}</p>
+
+            </h4>
+        </div>
+
+        <div class="header-inner">
+            <ul class="inner-ul">
+                <li>
+                    <button mat-icon-button class="btn size-lg" matBadge="2" matBadgeColor="warn"
+                        matBadgePosition="before" [matMenuTriggerFor]="notificationMenu" #menuTrigger="matMenuTrigger">
+                        <mat-icon>
+                            <img src="./assets/images/ic-notification.svg" alt="Icon" />
+                        </mat-icon>
+                    </button>
+                </li>
+                <li>
+                    <button mat-icon-button class="btn size-lg" (click)="openHelpDialog()">
+                        <mat-icon>
+                            <img src="./assets/images/ic-help-gray.svg" alt="Icon" />
+                        </mat-icon>
+                    </button>
+                </li>
+                <li>
+                    <button mat-button [matMenuTriggerFor]="menu" class="btn size-lg profile-dropdown-btn"
+                        disableRipple>
+                        <img src="assets/images/user-profile.png" alt="Profile" class="user-profile" />
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before" class="theme-menu profile-menu">
+                        <div class="profile-info">
+                            <p class="body1">Hi, Harry Owens</p>
+                            <p class="overline">{{currentModule}}</p>
+                        </div>
+                        <button mat-menu-item title="My Profile" routerLink="/ui/super-admin/my-profile">
+                            <img src="./assets/images/ic-my-profile.svg" alt="Icon" />
+                            My Profile
+                        </button>
+                        <button mat-menu-item title="Change Password" (click)="openChangePasswordDialog()">
+                            <img src="./assets/images/ic-lock.svg" alt="Icon" />
+                            Change password
+                        </button>
+                        <button mat-menu-item title="Logout" routerLink="/ui-login">
+                            <img src="./assets/images/ic-logout.svg" alt="Icon" />
+                            Logout
+                        </button>
+                    </mat-menu>
+                </li>
+            </ul>
+        </div>
+    </mat-toolbar>
+</header>
+
+<!-- Notification Menu -->
+<mat-menu #notificationMenu="matMenu" xPosition="before" class="notification-menu">
+    <div (click)="$event.stopPropagation()">
+        <div class="menu-head">
+            <h6 class="subtitle2 menu-title">Notifications (20)</h6>
+            <button mat-icon-button mat-dialog-close class="btn-close" (click)="menuTrigger.closeMenu()">
+                <mat-icon>
+                    <img src="./assets/images/ic-close.svg" alt="Icon" />
+                </mat-icon>
+            </button>
+        </div>
+        <ul class="list-ul">
+            <li>
+                <button mat-menu-item class="unread">
+                    <img src="./assets/images/test-user-1.png" alt="User Profile" />
+                    <div>
+                        <p class="msg-by">John Smith</p>
+                        <h5 class="notification-preview">
+                            Estimate is ready for review
+                        </h5>
+                        <p class="time">30 mins ago</p>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button mat-menu-item class="unread">
+                    <img src="./assets/images/test-user-system.png" alt="User Profile" />
+                    <div>
+                        <p class="msg-by">System Generated</p>
+                        <h5 class="notification-preview">
+                            Bid is due today
+                        </h5>
+                        <p class="time">15 hrs 30 mins ago</p>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button mat-menu-item>
+                    <img src="./assets/images/test-user-2.png" alt="User Profile" />
+                    <div>
+                        <p class="msg-by">David Bough</p>
+                        <h5 class="notification-preview">
+                            Project is completed
+                        </h5>
+                        <p class="time">31/03/2025 10:00</p>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button mat-menu-item>
+                    <img src="./assets/images/test-user-system.png" alt="User Profile" />
+                    <div>
+                        <p class="msg-by">System Generated</p>
+                        <h5 class="notification-preview">
+                            Bid is due today
+                        </h5>
+                        <p class="time">29/03/2025 10:00</p>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button mat-menu-item>
+                    <img src="./assets/images/test-user-3.png" alt="User Profile" />
+                    <div>
+                        <p class="msg-by">Johnson Charles</p>
+                        <h5 class="notification-preview">
+                            Estimate is ready for review
+                        </h5>
+                        <p class="time">27/03/2025 15:30</p>
+                    </div>
+                </button>
+            </li>
+        </ul>
+        <div class="pb-1">
+            <button mat-button title="View all" class="w-full" routerLink="/ui/ui-notifications"
+                (click)="menuTrigger.closeMenu()">
+                View all
+            </button>
+        </div>
+    </div>
+</mat-menu>

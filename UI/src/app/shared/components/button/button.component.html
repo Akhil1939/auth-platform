@@ -1,0 +1,29 @@
+@if (isVisible()) {
+    <button
+      mat-button
+      [id]="label() + '-btn'"
+      [ngClass]="classes()"
+      [disabled]="disabled()"
+      ButtonVariant
+      [buttonVariant]="buttonVariant()"
+      [type]="type()"
+      (click)="onClick.emit($event)"
+      [routerLink]="routerLink() || null"
+      [color]="color()"
+      [title]="label()"
+    >
+      @if(iconUrl()){
+      <mat-icon>
+        <img [src]="iconUrl()" alt="Icon" />
+      </mat-icon>
+      } @else if(matIcon()){
+      <mat-icon>
+        {{ matIcon() }}
+      </mat-icon>
+      }@else if(imageUrl()){
+      <img [src]="imageUrl()" alt="Icon" />
+      }
+      {{ label() }}
+    </button>
+    }
+    
