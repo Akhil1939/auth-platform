@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace API.Attributes;
+namespace API.Utils.Attributes;
 
 public class ValidateModelAttribute : ActionFilterAttribute
 {

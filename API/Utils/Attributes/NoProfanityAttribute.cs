@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Attributes;
+namespace API.Utils.Attributes;
 
-public class NoProfanityAttribute
+public class NoProfanityAttribute : ValidationAttribute
 {
     private readonly string[] _bannedWords = { "spam", "scam", "offensive" };
 
@@ -10,7 +10,7 @@ public class NoProfanityAttribute
     {
         if (value is string message)
         {
-            foreach (var word in _bannedWords)
+            foreach (string word in _bannedWords)
             {
                 if (message.Contains(word, StringComparison.OrdinalIgnoreCase))
                 {
