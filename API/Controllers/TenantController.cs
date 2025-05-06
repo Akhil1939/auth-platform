@@ -17,14 +17,7 @@ public class TenantController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> RegisterTenant([FromBody] TenantRegistrationRequest request)
     {
-        try
-        {
-            var tenant = await _tenantService.RegisterTenantAsync(request);
-            return Ok(new { tenant.Id, tenant.Slug });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
+        Data.Models.Central.Tenant tenant = await _tenantService.RegisterTenantAsync(request);
+        return Ok(new { tenant.Id, tenant.Slug });
     }
 }

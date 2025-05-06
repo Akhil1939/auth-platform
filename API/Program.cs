@@ -2,7 +2,7 @@ using API.BackgroundServices;
 using API.Data.Contexts;
 using API.Providers;
 using API.Services;
-using API.Utils;
+using API.Utils.Middlewares;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -28,7 +28,7 @@ builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddHostedService<MigrationBackgroundService>();
 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 WebApplication app = builder.Build();
@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<RequestLogging>();
 
 app.UseExceptionHandler();
 
