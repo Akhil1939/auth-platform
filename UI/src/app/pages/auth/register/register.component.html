@@ -1,0 +1,34 @@
+<h6>{{ "WELCOME"  }}</h6>
+<h5>{{ "SIGN_UP_TITLE"  }}</h5>
+<form [formGroup]="formGroup" (ngSubmit)="submitForm()">
+<app-input [label]="'FULLNAME'" [control]="formGroup.controls.fullName"></app-input>
+<app-input [label]="'EMAIL' " [control]="formGroup.controls.email"></app-input>
+<app-input
+  [label]="'PASSWORD'"
+  [type]="hide ? 'password' : 'text'"
+  [control]="formGroup.controls.password"
+  [suffixButtonImgPath]="
+    hide ? imagePaths.EYE_CLOSE_ICON : imagePaths.EYE_OPEN_ICON
+  "
+  (suffixButtonClick)="hide = !hide"
+></app-input>
+<app-button
+  [buttonVariant]="'flat'"
+  [label]="'SIGN_UP_BUTTON'"
+  [disabled]="formGroup.invalid || isButtonDisabled()"
+  [classes]="['w-full']"
+  type="submit"
+></app-button>
+</form>
+<div class="creat-account">
+  <p>
+    {{ "ALREADY_HAVE_ACCOUNT" }}&nbsp;
+    <a
+      [routerLink]=""
+      [title]="'LOGIN_BUTTON'"
+      class="primary-link text-primary"
+    >
+      {{ "LOGIN_BUTTON" }}
+    </a>
+  </p>
+</div>

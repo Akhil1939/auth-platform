@@ -79,6 +79,8 @@ public class TenantService
         return tenant;
     }
 
+    public
+
     private async Task CreateTenantDatabaseAsync(string dbName)
     {
         string? adminConn = _config.GetConnectionString("PostgresAdmin");

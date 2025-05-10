@@ -3,12 +3,13 @@ import {
   Component,
   DestroyRef,
   effect,
+  forwardRef,
   inject,
   input,
   output,
   signal,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ErrorMessage, InputType } from './models';
@@ -30,6 +31,13 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './input.component.html',
   styleUrl: './input.component.scss',
   standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true,
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent {

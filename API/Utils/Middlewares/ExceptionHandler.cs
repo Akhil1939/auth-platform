@@ -7,7 +7,7 @@ public class ExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        var problemDetails = new ProblemDetails
+        ProblemDetails problemDetails = new()
         {
             Title = "An error occurred",
             Status = StatusCodes.Status400BadRequest,

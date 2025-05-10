@@ -1,0 +1,13 @@
+﻿tenant -
+	- register (create db)
+	- login (token)
+	- config user registration
+		- simple (
+		- 2 factor (otp)
+		- continue with
+			- google
+			- GitHub
+	- manage use roles
+	- manage user rights
+	
+	

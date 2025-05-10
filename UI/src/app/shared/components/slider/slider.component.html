@@ -1,0 +1,21 @@
+<div class="slider-outer-block">
+  <div class="keen-slider" #sliderRef>
+    <div class="keen-slider__slide number-slide1">
+      <img [src]="imagePaths.SLIDE_1" alt="Slide 1" />
+    </div>
+    <div class="keen-slider__slide number-slide2">
+      <img [src]="imagePaths.SLIDE_2" alt="Slide 2" />
+    </div>
+    <div class="keen-slider__slide number-slide3">
+      <img [src]="imagePaths.SLIDE_3" alt="Slide 3" />
+    </div>
+  </div>
+  <div class="dots">
+    @for (slide of dotHelper; track $index) {
+    <button
+      (click)="slider.moveToIdx($index)"
+      [class]="'dot ' + ($index === currentSlide ? 'active' : '')"
+    ></button>
+    }
+  </div>
+</div>

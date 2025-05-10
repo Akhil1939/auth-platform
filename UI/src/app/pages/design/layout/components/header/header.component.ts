@@ -1,33 +1,38 @@
-import { CommonModule } from "@angular/common";
-import { Component, inject, OnInit } from "@angular/core";
-import { MatBadgeModule } from "@angular/material/badge";
-import { MatButtonModule } from "@angular/material/button";
-import { MatDialog } from "@angular/material/dialog";
-import { MatIconModule } from "@angular/material/icon";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { Router, RouterModule } from "@angular/router";
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [ MatToolbarModule,
+  imports: [
+    MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatBadgeModule,
     MatMenuModule,
     RouterModule,
-    CommonModule],
+    CommonModule,
+  ],
   templateUrl: './header.component.html',
   standalone: true,
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  constructor(private router: Router) {}
-
   readonly dialog = inject(MatDialog);
-
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
   ngOnInit(): void {
-    document.body.classList.add("sidebar-full");
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.add('sidebar-full');
+    }
     this.setActiveModule();
   }
 
@@ -36,22 +41,20 @@ export class HeaderComponent {
     const body = document.body;
     const windowWidth = window.innerWidth;
     if (windowWidth > 1199) {
-      if (body.classList.contains("sidebar-full")) {
-        body.classList.remove("sidebar-full");
-        body.classList.add("sidebar-collapsed");
+      if (body.classList.contains('sidebar-full')) {
+        body.classList.remove('sidebar-full');
+        body.classList.add('sidebar-collapsed');
       } else {
-        body.classList.remove("sidebar-collapsed");
-        body.classList.add("sidebar-full");
+        body.classList.remove('sidebar-collapsed');
+        body.classList.add('sidebar-full');
       }
     } else {
-      body.classList.add("show-sidebar");
+      body.classList.add('show-sidebar');
     }
   }
 
   // Dialog Code
-  openChangePasswordDialog() {
-    
-  }
+  openChangePasswordDialog() {}
   openHelpDialog() {
     // const dialogRef = this.dialog.open(NeedHelpDialogComponent, {
     //   autoFocus: false,
@@ -59,17 +62,17 @@ export class HeaderComponent {
     // });
   }
 
-  currentModule: string = "";
+  currentModule: string = '';
 
   setActiveModule() {
     // Check the first part of the URL to determine the module
     const url = this.router.url;
-    if (url.includes("/super-admin")) {
-      this.currentModule = "Super Admin";
-    } else if (url.includes("/company")) {
-      this.currentModule = "Company Owner";
-    } else if (url.includes("/project-manager")) {
-      this.currentModule = "Project Manager";
-    }
+    // if (url.includes('/super-admin')) {
+    //   this.currentModule = 'Super Admin';
+    // } else if (url.includes('/company')) {
+    //   this.currentModule = 'Company Owner';
+    // } else if (url.includes('/project-manager')) {
+    //   this.currentModule = 'Project Manager';
+    // }
   }
 }
