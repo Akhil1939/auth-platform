@@ -25,7 +25,7 @@ public class JwtHelper
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_secretKey));
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(
+        JwtSecurityToken token = new(
             issuer: _issuer,
             audience: _audience,
             claims: claims,
@@ -55,7 +55,7 @@ public class JwtHelper
 
         try
         {
-            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, parameters, out var validatedToken);
+            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, parameters, out SecurityToken? validatedToken);
 
             // Extra check: token must be a JWT and use expected algorithm
             if (validatedToken is JwtSecurityToken jwt &&

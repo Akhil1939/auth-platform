@@ -4,7 +4,7 @@ using API.Data.Models.Tenant;
 using API.Providers;
 using API.Utils;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
+using System.Security.Claims;
 
 namespace API.Services;
 
@@ -12,11 +12,13 @@ public class AuthService
 {
     private readonly ITenantDbContextFactory _dbFactory;
     private readonly ITenantProvider _tenantProvider;
+    private readonly JwtHelper _jwtHelper;
 
-    public AuthService(ITenantDbContextFactory dbFactory, ITenantProvider tenantProvider)
+    public AuthService(ITenantDbContextFactory dbFactory, ITenantProvider tenantProvider, JwtHelper jwtHelper)
     {
         _dbFactory = dbFactory;
         _tenantProvider = tenantProvider;
+        _jwtHelper = jwtHelper;
     }
 
     public async Task<bool> RegisterUserAsync(string tenantSlug, string email, string password)
@@ -50,11 +52,10 @@ public class AuthService
             throw new Exception("Invalid credentials");
 
         // Return JWT (replace with your signing logic)
-        return GenerateFakeJwt(user.Email);
+        IEnumerable<Claim> claims = JwtHelper.GetBasicClaims(user.Id.ToString(), user.Email);
+
+        return _jwtHelper.CreateToken(claims);
     }
 
-    private string GenerateFakeJwt(string email)
-    {
-        return Convert.ToBase64String(Encoding.UTF8.GetBytes($"jwt-for:{email}"));
-    }
+
 }

@@ -2,7 +2,9 @@ using API.BackgroundServices;
 using API.Data.Contexts;
 using API.Providers;
 using API.Services;
+using API.Utils;
 using API.Utils.Middlewares;
+using API.Utils.Settings;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -23,7 +25,22 @@ builder.Services.AddScoped<TenantDbDesignTimeFactory>();
 
 builder.Services.AddScoped<TenantService>();
 builder.Services.AddScoped<MigrationUpdateService>();
+
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<GoogleAuthService>();
+
+// Bind settings
+IConfigurationSection jwtSection = builder.Configuration.GetSection("JwtSettings");
+builder.Services.Configure<JwtSettings>(jwtSection);
+JwtSettings? jwtSettings = jwtSection.Get<JwtSettings>();
+
+// Register JwtHelper as singleton
+builder.Services.AddSingleton(new JwtHelper(
+    jwtSettings.SecretKey,
+    jwtSettings.Issuer,
+    jwtSettings.Audience,
+    jwtSettings.ExpiresInMinutes
+));
 
 
 builder.Services.AddHostedService<MigrationBackgroundService>();
